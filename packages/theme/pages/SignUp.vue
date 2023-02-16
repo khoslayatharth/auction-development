@@ -159,7 +159,7 @@
             </div>
             <SfButton
               type="submit"
-              class="sf-button--full-width form__button"
+              class="sf-button--full-width form__button signup_btn"
               :disabled="loading"
             >
               <SfLoader :class="{ loader: loading }" :loading="loading">
@@ -324,5 +324,13 @@ export default {
     }
     .top{
         margin-top:30px;
+    }
+
+    .signup_btn{
+        border-radius: 50px 50px;
+        padding: 10px;
+        background: yellow;
+        font-weight: bold;
+        color: black;
     }
 </style>

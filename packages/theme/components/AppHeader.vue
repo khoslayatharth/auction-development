@@ -31,6 +31,13 @@
           </SfButton>
           <SfButton
             class="sf-button--pure sf-header__action"
+            aria-label="Open account button"
+            :link="localePath(`/signup`)"
+          >
+            Sign Up
+          </SfButton>
+          <SfButton
+            class="sf-button--pure sf-header__action"
             aria-label="Toggle wishlist sidebar"
             @click="toggleWishlistSidebar"
           >
@@ -153,6 +160,7 @@ export default {
     });
 
     const accountIcon = computed(() => isAuthenticated.value ? 'profile_fill' : 'profile');
+    const signupLabel = "Sign Up";
 
     // TODO: https://github.com/DivanteLtd/vue-storefront/issues/4927
     const handleAccountClick = async () => {

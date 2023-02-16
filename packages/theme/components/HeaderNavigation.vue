@@ -1,5 +1,5 @@
 <template>
-  <div class="sf-header__navigation desktop" v-if="!isMobile">
+  <div class="sf-header__navigation desktop" v-if="!isMobile"><!-- This is Normal Navigation-->
     <SfHeaderNavigationItem
       v-for="(category, index) in categories"
       :key="index"
@@ -9,7 +9,7 @@
       :link="localePath(`/c/${category}`)"
     />
   </div>
-  <SfModal v-else :visible="isMobileMenuOpen">
+  <SfModal v-else :visible="isMobileMenuOpen"> <!-- This is for mobile menu-->
     <SfHeaderNavigationItem
       v-for="(category, index) in categories"
       :key="index"

@@ -20,7 +20,7 @@
             <ValidationProvider rules="required|email" v-slot="{ errors }">
               <SfInput
                 v-e2e="'login-modal-email'"
-                v-model="form.username"
+                v-model="form.email"
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 name="email"
@@ -40,13 +40,13 @@
                 class="form__element"
               />
             </ValidationProvider>
-            <SfCheckbox
+            <!-- <SfCheckbox
               v-e2e="'login-modal-remember-me'"
               v-model="rememberMe"
               name="remember-me"
               label="Remember me"
               class="form__element checkbox"
-            />
+            /> -->
             <div v-if="error.login">
               {{ error.login }}
             </div>
@@ -80,7 +80,7 @@
             <ValidationProvider rules="required|email" v-slot="{ errors }">
               <SfInput
                 v-e2e="'forgot-modal-email'"
-                v-model="form.username"
+                v-model="form.email"
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 name="email"
@@ -224,7 +224,7 @@ export default {
     ValidationObserver,
     SfBar
   },
-  setup() {
+  setup(props, context) {
     const SCREEN_LOGIN = 'login';
     const SCREEN_REGISTER = 'register';
     const SCREEN_THANK_YOU = 'thankYouAfterForgotten';
@@ -235,7 +235,7 @@ export default {
     const userEmail = ref('');
     const createAccount = ref(false);
     const rememberMe = ref(false);
-    const { register, login, loading, error: userError } = useUser();
+    const { register, login, loading, error: userError, user } = useUser();
     const { request, error: forgotPasswordError, loading: forgotPasswordLoading } = useForgotPassword();
     const currentScreen = ref(SCREEN_REGISTER);
 
@@ -297,7 +297,7 @@ export default {
     const handleLogin = async () => handleForm(login)();
 
     const handleForgotten = async () => {
-      userEmail.value = form.value.username;
+      userEmail.value = form.value.email;
       await request({ email: userEmail.value });
 
       if (!forgotPasswordError.value.request) {

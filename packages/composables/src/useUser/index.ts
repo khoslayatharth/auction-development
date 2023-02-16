@@ -34,9 +34,24 @@ const params: UseUserFactoryParams<User, UpdateParams, RegisterParams> = {
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  logIn: async (context: Context, { username, password }) => {
+  logIn: async (context: Context, params) => {
     console.log('Mocked: useUser.logIn');
-    return {};
+    const loginResult = await context.$bagisto.api.customerLogin(params);
+
+    const loginResultResponse = {
+      key: 'customer_login',
+      customerToken: loginResult?.data?.customerLogin?.accessToken || null,
+      success: loginResult?.data?.customerLogin,
+      error: loginResult.data ? null : loginResult
+    };
+
+    if (loginResultResponse.customerToken !== null) {
+      context.$bagisto.config.app.$cookies.set('vsf-bagCust-token', loginResultResponse.customerToken);
+      context?.cart.load();
+    }
+    console.log("login result response", loginResultResponse)
+
+    return loginResultResponse;
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

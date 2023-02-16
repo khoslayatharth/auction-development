@@ -1,5 +1,6 @@
 import { apiClientFactory } from '@vue-storefront/core';
 import axios from 'axios';
+import { customerLogin } from './api/customerLogin';
 import type { Setttings, Endpoints } from './types';
 
 function onCreate(settings) {
@@ -15,7 +16,7 @@ function onCreate(settings) {
 const { createApiClient } = apiClientFactory<Setttings, Endpoints>({
   onCreate,
   api: {
-
+    customerLogin
   }
 });
 

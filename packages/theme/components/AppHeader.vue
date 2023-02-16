@@ -1,7 +1,7 @@
 <template>
   <div>
     <SfHeader
-      class="sf-header--has-mobile-search"
+      class="sf-header--has-mobile-search abcd"
       :class="{'header-on-top': isSearchOpen}"
       :isNavVisible="isMobileMenuOpen"
     >
@@ -23,6 +23,7 @@
             class="sf-button--pure sf-header__action"
             aria-label="Open account button"
             @click="handleAccountClick"
+            style="margin-left:30px;"
           >
             <SfIcon
               :icon="accountIcon"
@@ -30,11 +31,18 @@
             />
           </SfButton>
           <SfButton
-            class="sf-button--pure sf-header__action"
+            class="sf-button--pure sf-header__action signin_btn"
+            aria-label="Open account button"
+            :link="localePath(`/signin`)"
+          >
+            SIGN IN
+          </SfButton>
+          <SfButton
+            class="sf-button--pure sf-header__action signup_btn"
             aria-label="Open account button"
             :link="localePath(`/signup`)"
           >
-            Sign Up
+            SIGN UP
           </SfButton>
           <SfButton
             class="sf-button--pure sf-header__action"
@@ -247,6 +255,7 @@ export default {
   &__logo-image {
     height: 100%;
   }
+   
 }
 .header-on-top {
   z-index: 2;
@@ -257,10 +266,33 @@ export default {
     display: none;
   }
 }
-
 .cart-badge {
   position: absolute;
   bottom: 40%;
   left: 40%;
 }
+
+.signup_btn {
+  border-radius: 50px 50px;
+  max-width: 100px;
+  padding: 10px;
+  background: yellow;
+  font-weight: bold;
+}
+
+  .signin_btn {
+    border: 2px solid black;
+    border-radius: 50px 50px;
+    max-width: 100px;
+    padding: 10px;
+    background: white;
+    font-weight: bold;
+  }
+  .sf-button--pure{
+    margin:0px
+  }
+
+  .sf-header__icons{
+    gap:10px;
+  }
 </style>

@@ -135,4 +135,8 @@ h4 {
   line-height: 1.6;
   margin: 0;
 }
+
+.sf-header__wrapper {
+    background: black !important;
+}
 </style>

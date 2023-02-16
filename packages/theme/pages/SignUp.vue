@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h1 class="heading">BECOME A MEMBER</h1>
+        <h1 class="heading top">BECOME A MEMBER</h1>
+        <hr style="color:rgba(0,0,0,.1); margin-bottom:30px; margin-top:30px">
         <h2 class="heading">SIGN UP NOW</h2>
         <form class="form" @submit.prevent="handleSubmit(handleRegister)" autocomplete="off">
            
@@ -308,7 +309,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    .heading {
+.heading {
         text-align: center;
     }
 
@@ -320,5 +321,8 @@ export default {
         }
         max-width: 500px;
         margin: auto;
+    }
+    .top{
+        margin-top:30px;
     }
 </style>

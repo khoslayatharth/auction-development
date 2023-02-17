@@ -90,7 +90,7 @@
              </SfSelect>
             </ValidationProvider>
             <ValidationProvider rules="required" v-slot="{ errors }">
-              <SfInput
+              <SfInput v-if = "form.country !== 'United States'"
                 v-e2e="'login-modal-state'"
                 v-model="form.state"
                 :valid="!errors[0]"
@@ -99,6 +99,19 @@
                 label="State"
                 class="form__element"
               />
+              <SfSelect v-if = "form.country === 'United States'"
+                class="sf-select--underlined form__element"
+                name="state"
+                label="State"
+                v-e2e="'login-modal-state'"
+                v-model="form.state"
+                :valid="!errors[0]"
+                :errorMessage="errors[0]"
+                value=""
+                placeholder=""
+                >
+                <SfSelectOption v-for="state in statelist" :key="state.abbreviation" :value="state.name">{{state.name}}</SfSelectOption>
+             </SfSelect>
             </ValidationProvider>
             <ValidationProvider rules="required" v-slot="{ errors }">
               <SfInput
@@ -181,6 +194,7 @@ import { required, email } from 'vee-validate/dist/rules';
 import { useUser, useForgotPassword } from '@vue-storefront/bagisto';
 import { useUiState } from '~/composables';
 import countries from '../static/assets/countries.js'
+import states from '../static/assets/states.js'
 
 extend('email', {
   ...email,
@@ -232,6 +246,7 @@ export default {
     };
 
     const countrylist = countries;
+    const statelist = states;
 
     const barTitle = computed(() => {
       switch (currentScreen.value) {
@@ -311,7 +326,8 @@ export default {
       SCREEN_REGISTER,
       SCREEN_THANK_YOU,
       SCREEN_FORGOTTEN,
-      countrylist
+      countrylist,
+      statelist
     };
   }
 };

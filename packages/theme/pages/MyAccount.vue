@@ -52,6 +52,7 @@ import {
   mapMobileObserver,
   unMapMobileObserver
 } from '@storefront-ui/vue/src/utilities/mobile-observer.js';
+import { useUiState } from '~/composables';
 
 export default {
   name: 'MyAccount',
@@ -70,7 +71,7 @@ export default {
   setup(props, context) {
     const route = useRoute();
     const router = useRouter();
-
+    const { toggleSignInButtons } = useUiState();
     const { logout } = useUser();
     const isMobile = computed(() => mapMobileObserver().isMobile.get());
     const activePage = computed(() => {
@@ -88,6 +89,7 @@ export default {
     const changeActivePage = async (title) => {
       if (title === 'Log out') {
         await logout();
+        toggleSignInButtons();
         router.push(context.root.localePath({ name: 'home' }));
         return;
       }

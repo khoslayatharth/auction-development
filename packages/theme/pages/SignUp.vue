@@ -65,7 +65,7 @@
             <ValidationProvider rules="required" v-slot="{ errors }">
               <SfInput
                 v-e2e="'login-modal-zip'"
-                v-model="form.streetAddress2"
+                v-model="form.zip"
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
                 name="zip"
@@ -75,15 +75,19 @@
             </ValidationProvider>
            
             <ValidationProvider rules="required" v-slot="{ errors }">
-              <SfInput
+              <SfSelect
+                class="sf-select--underlined form__element"
+                name="country"
+                label="Country"
                 v-e2e="'login-modal-country'"
                 v-model="form.country"
                 :valid="!errors[0]"
                 :errorMessage="errors[0]"
-                name="country"
-                label="Country"
-                class="form__element"
-              />
+                value=""
+                placeholder=""
+                >
+                <SfSelectOption v-for="country in countrylist" :key="country.country" :value="country.country">{{country.country}}</SfSelectOption>
+             </SfSelect>
             </ValidationProvider>
             <ValidationProvider rules="required" v-slot="{ errors }">
               <SfInput
@@ -171,11 +175,12 @@
 </template>
 <script>
 import { ref, watch, reactive, computed } from '@nuxtjs/composition-api';
-import { SfModal, SfInput, SfButton, SfCheckbox, SfLoader, SfAlert, SfBar } from '@storefront-ui/vue';
+import { SfModal, SfInput, SfButton, SfCheckbox, SfLoader, SfAlert, SfBar, SfSelect } from '@storefront-ui/vue';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
 import { useUser, useForgotPassword } from '@vue-storefront/bagisto';
 import { useUiState } from '~/composables';
+import countries from '../static/assets/countries.js'
 
 extend('email', {
   ...email,
@@ -198,14 +203,15 @@ export default {
     SfAlert,
     ValidationProvider,
     ValidationObserver,
-    SfBar
+    SfBar,
+    SfSelect
   },
   setup(props, context) {
     const SCREEN_LOGIN = 'login';
     const SCREEN_REGISTER = 'register';
     const SCREEN_THANK_YOU = 'thankYouAfterForgotten';
     const SCREEN_FORGOTTEN = 'forgottenPassword';
-
+   
     const { isLoginModalOpen, toggleLoginModal } = useUiState();
     const form = ref({});
     const userEmail = ref('');
@@ -225,6 +231,8 @@ export default {
       error.register = null;
     };
 
+    const countrylist = countries;
+
     const barTitle = computed(() => {
       switch (currentScreen.value) {
         case SCREEN_LOGIN:
@@ -242,7 +250,6 @@ export default {
         resetErrorValues();
       }
     });
-
     const setCurrentScreen = (screenName) => {
       resetErrorValues();
       currentScreen.value = screenName;
@@ -303,7 +310,8 @@ export default {
       SCREEN_LOGIN,
       SCREEN_REGISTER,
       SCREEN_THANK_YOU,
-      SCREEN_FORGOTTEN
+      SCREEN_FORGOTTEN,
+      countrylist
     };
   }
 };

@@ -19,25 +19,25 @@
       </template>
       <template #header-icons>
         <div v-e2e="'header-icons'" class="sf-header__icons">
-          <SfButton
+          <SfButton v-if="loggedIn"
             class="sf-button--pure sf-header__action"
             aria-label="Open account button"
             @click="handleAccountClick"
-            style="margin-left:30px;"
           >
             <SfIcon
               :icon="accountIcon"
               size="1.25rem"
+              color = "white"
             />
           </SfButton>
-          <SfButton
+          <SfButton v-if="!loggedIn"
             class="sf-button--pure sf-header__action signin_btn"
             aria-label="Open account button"
             :link="localePath(`/signin`)"
           >
             SIGN IN
           </SfButton>
-          <SfButton
+          <SfButton v-if="!loggedIn"
             class="sf-button--pure sf-header__action signup_btn"
             aria-label="Open account button"
             :link="localePath(`/signup`)"
@@ -81,6 +81,7 @@
           @focus="isSearchOpen = true"
           @keydown.esc="closeSearch"
           v-click-outside="closeSearch"
+          style="margin-right:30px; color: white;"
         >
           <template #icon>
             <SfButton
@@ -152,7 +153,7 @@ export default {
   directives: { clickOutside },
   setup(props, { root }) {
     const router = useRouter();
-    const { toggleCartSidebar, toggleWishlistSidebar, toggleLoginModal, isMobileMenuOpen } = useUiState();
+    const { toggleCartSidebar, toggleWishlistSidebar, toggleLoginModal, isMobileMenuOpen, isLoggedIn } = useUiState();
     const { setTermForUrl, getFacetsFromURL } = useUiHelpers();
     const { isAuthenticated } = useUser();
     const { cart } = useCart();
@@ -168,6 +169,7 @@ export default {
     });
 
     const accountIcon = computed(() => isAuthenticated.value ? 'profile_fill' : 'profile');
+    const loggedIn = computed(() => isLoggedIn.value ? true : false)
     const signupLabel = "Sign Up";
 
     // TODO: https://github.com/DivanteLtd/vue-storefront/issues/4927
@@ -182,7 +184,8 @@ export default {
 
     const closeSearch = () => {
       const wishlistClassName = 'sf-product-card__wishlist-icon';
-      const isWishlistIconClicked = event.path.find(p => wishlistClassName.search(p.className) > 0);
+      // const isWishlistIconClicked = event.path.find(p => wishlistClassName.search(p.className) > 0);
+      const isWishlistIconClicked = false;
       if (isWishlistIconClicked || !isSearchOpen.value) return;
 
       term.value = '';
@@ -240,7 +243,8 @@ export default {
       isMobile,
       isMobileMenuOpen,
       removeSearchResults,
-      addBasePath
+      addBasePath,
+      loggedIn
     };
   }
 };

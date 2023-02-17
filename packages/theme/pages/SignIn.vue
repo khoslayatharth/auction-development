@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1 class="heading">SIGN IN</h1>
+        <ValidationObserver v-slot="{ handleSubmit }" key="log-in">
         <form class="form" @submit.prevent="handleSubmit(handleLogin)">
                 <ValidationProvider rules="required|email" v-slot="{ errors }">
                   <SfInput
@@ -45,11 +46,12 @@
                   </SfLoader>
                 </SfButton>
         </form>
+        </ValidationObserver>
     </div>
 </template>
 
 <script>
-import { ref, watch, reactive, computed } from '@nuxtjs/composition-api';
+import { ref, watch, reactive, computed, useRouter } from '@nuxtjs/composition-api';
 import { SfModal, SfInput, SfButton, SfCheckbox, SfLoader, SfAlert, SfBar } from '@storefront-ui/vue';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
@@ -85,7 +87,7 @@ export default {
     const SCREEN_THANK_YOU = 'thankYouAfterForgotten';
     const SCREEN_FORGOTTEN = 'forgottenPassword';
 
-    const { isLoginModalOpen, toggleLoginModal } = useUiState();
+    const { isLoginModalOpen, toggleLoginModal, toggleSignInButtons } = useUiState();
     const form = ref({});
     const userEmail = ref('');
     const createAccount = ref(false);
@@ -93,7 +95,7 @@ export default {
     const { register, login, loading, error: userError, user } = useUser();
     const { request, error: forgotPasswordError, loading: forgotPasswordLoading } = useForgotPassword();
     const currentScreen = ref(SCREEN_REGISTER);
-
+    const routerxyz = useRouter();
     const error = reactive({
       login: null,
       register: null
@@ -138,7 +140,8 @@ export default {
         error.register = userError.value.register?.message;
         return;
       }
-      toggleLoginModal();
+      toggleSignInButtons();
+      routerxyz.push('/home')
     };
 
     const closeModal = () => {
